@@ -202,7 +202,7 @@ def _cluster(deduper, clean_data, messy_data, threshold, canonicalize):
 
 
 def gazetteer_dataframe(clean_data, messy_data, field_properties, canonicalize=False,
-                     config_name="gazetteer_dataframe", update_model=False, threshold=0.3,
+                     config_name="gazetteer_dataframe", settings_file=None, training_file=None, update_model=False, threshold=0.3,
                      sample_size=1, n_cores=None):
     """Deduplicates a dataframe given fields of interest.
         Parameters
@@ -241,10 +241,10 @@ def gazetteer_dataframe(clean_data, messy_data, field_properties, canonicalize=F
             attributes of the record.
     """
     # Import Data  
-    config_name = config_name.replace(" ", "_")
-
-    settings_file = config_name + '_learned_settings'
-    training_file = config_name + '_training.json'
+    if {settings_file, training_file} == {None}:
+        config_name = config_name.replace(" ", "_")
+        settings_file = config_name + '_learned_settings'
+        training_file = config_name + '_training.json'
 
     print('Importing data ...')
     assert type(clean_data)==pd.core.frame.DataFrame, 'Please provide a gazette in pandas dataframe format'
